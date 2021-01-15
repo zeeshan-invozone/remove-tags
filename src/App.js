@@ -10,6 +10,8 @@ function App() {
     const last = pTag[pTag.length - 1];
     const lastlength = last.textContent.length;
     const iframe = document.createElement('iframe');
+    iframe.setAttribute('height', '300px');
+    iframe.setAttribute('width', '600px');
     document.body.appendChild(iframe);
     const res = getData.body.textContent;
     if (lastlength <= 0) {
