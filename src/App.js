@@ -1,12 +1,5 @@
-import { useState } from 'react';
 import './App.css';
 function App() {
-  const [html, setHtml] = useState('');
-  const [show, setShow] = useState(false);
-  const handleChange = (e) => {
-    // setHtml(e.target.value);
-    handleSubmit(e.target.value);
-  };
   const handleSubmit = (data) => {
     const parser = new DOMParser();
     const getData = parser.parseFromString(data, 'text/html');
@@ -16,19 +9,26 @@ function App() {
     });
     const last = pTag[pTag.length - 1];
     const lastlength = last.textContent.length;
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    const res = getData.body.textContent;
     if (lastlength <= 0) {
       console.log('p will be removed');
       console.log(lastlength);
       last.remove();
-      console.log('getdata', getData);
-      const iframe = document.createElement('iframe');
-      document.body.appendChild(iframe);
+      console.log('getdata', getData.body.innerHTML);
+      console.log('res', res);
+      // document.body = getData.body;
       iframe.contentWindow.document.open();
-      iframe.contentWindow.document.write('Hello world');
+      iframe.contentWindow.document.write(res);
       iframe.contentWindow.document.close();
       console.log(iframe);
     } else {
+      console.log('res', res);
       console.log('p do not removed');
+      iframe.contentWindow.document.open();
+      iframe.contentWindow.document.write(res);
+      iframe.contentWindow.document.close();
       console.log(lastlength);
     }
   };
@@ -38,12 +38,8 @@ function App() {
         rows='15'
         cols='100'
         placeholder='enter data here'
-        onChange={handleChange}
+        onChange={(e) => handleSubmit(e.target.value)}
       />
-      <button onClick={handleSubmit}>click</button>
-      {/* <iframe width='33%' height='150px'>
-        {show && <div>{html}</div>}
-      </iframe> */}
     </>
   );
 }
